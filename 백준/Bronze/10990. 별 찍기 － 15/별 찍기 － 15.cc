@@ -1,0 +1,16 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0);
+	int n; cin >> n;
+	for (int i=1;i<=n;i++) {
+        for(int j=0;j<n-i;j++) cout << ' ';
+        cout << '*';
+        for(int j=0;j<2*i-3;j++) cout << " ";
+        if(i>1) cout << "*\n";
+        else cout << '\n';
+	}
+	return 0;
+}
