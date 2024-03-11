@@ -6,10 +6,11 @@
 using namespace std;
 
 int N, B, Q, A[1010101], R[1010101], C[1010101], res;
+
 struct Qry {
     int i, s, e;
     bool operator<(Qry &a) { 
-        if(s/B == a.s/B) return e < a.e;
+        if(s/B == a.s/B) return (s/B)&1 ? e<a.e : e>a.e;
         return s < a.s;
     }
 };
