@@ -4,8 +4,11 @@ using ll=long long;
 
 int N, B, A[101010], R[101010], C[101010], D[101010], MX;
 struct Qry {
-    int idx, s, e;
-    bool operator<(Qry &a) { return s/B == a.s/B ? e < a.e : s/B < a.s/B; }
+    int i, s, e;
+    bool operator<(Qry &a) { 
+        if(s/B == a.s/B) return (s/B)&1 ? e>a.e : e<a.e;
+        return s < a.s; 
+    }
 };
 
 vector<Qry> qry;
@@ -32,13 +35,13 @@ int main()
     D[0]=N;
     int s=qry[0].s, e=qry[0].e;
     for(int i=s;i<=e;i++) add(A[i]);
-	R[qry[0].idx]=MX;
+	R[qry[0].i]=MX;
 	for(int i=1; i<q; i++){
 		while(s < qry[i].s) sub(A[s++]);
 		while(s > qry[i].s) add(A[--s]);
 		while(e < qry[i].e) add(A[++e]);
 		while(e > qry[i].e) sub(A[e--]);
-		R[qry[i].idx] = MX;
+		R[qry[i].i] = MX;
 	}
 	for(int i=0; i<q; i++) cout << R[i] << "\n";
     return 0;
