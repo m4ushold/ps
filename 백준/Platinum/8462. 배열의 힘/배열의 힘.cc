@@ -5,9 +5,11 @@ using ll=long long;
 ll N, B, Q, A[101010], R[101010], C[1010101], res;
 struct Qry {
     int i, s, e;
-    bool operator<(Qry &a) { return s/B == a.s/B ? e < a.e : s/B < a.s/B; }
+    bool operator<(Qry &a) { 
+        if(s/B == a.s/B) return (s/B)&1 ? e>a.e : e<a.e;
+        return s < a.s; 
+    }
 };
-
 vector<Qry> qry;
 
 void sub(int v) {
