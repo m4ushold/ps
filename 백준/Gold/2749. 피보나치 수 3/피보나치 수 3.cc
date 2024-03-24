@@ -14,7 +14,7 @@ struct Mat2d
 
 ll fibo(ll n)
 {
-    Mat2d m={1,1,1,0}, i={1,0,1,0};
+    Mat2d m={1,1,1,0}, i={1,0,0,1};
     while(n) {
         if(n&1) i=i*m;
         m=m*m, n/=2;
