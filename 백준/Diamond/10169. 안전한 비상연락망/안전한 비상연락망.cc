@@ -2,12 +2,11 @@
 using namespace std;
 using ll=long long;
 
-constexpr int SZ=1<<17, INF=1e9;
-int N, M, Q, TOP[SZ], P[SZ], D[SZ], S[SZ], IN[SZ], SP[SZ], R[SZ];
+constexpr ll SZ=1<<17, INF=0x3f3f3f3f3f3f3f3f;
+ll N, M, Q, TOP[SZ], P[SZ], D[SZ], S[SZ], IN[SZ], SP[SZ];
+ll R[SZ];
 vector<int> T[SZ], G[SZ];
 vector<tuple<int,int,int,int>> E;
-
-ll m(ll a, ll b) {return min(a,b);}
 
 struct SegTree {
     ll T[SZ<<1], L[SZ<<1];
@@ -18,7 +17,7 @@ struct SegTree {
         if(s!=e) for(int i:{node*2,node*2+1}) L[i]=min(L[i],L[node]);
         L[node]=INF;
     }
-    void upd(int l, int r, int v, int node=1, int s=0, int e=SZ-1) {
+    void upd(int l, int r, ll v, int node=1, int s=0, int e=SZ-1) {
         push(node,s,e);
         if(r<s || e<l) return;
         else if(l<=s && e<=r) {L[node]=v, push(node,s,e); return;}
@@ -52,7 +51,7 @@ void DFS2(int v){
     for(auto i : T[v]) TOP[i] = i == T[v][0] ? TOP[v] : i, DFS2(i);
 }
 
-void upd(int u, int v, int w) { 
+void upd(int u, int v, ll w) { 
     for(; TOP[u] != TOP[v]; u=P[TOP[u]]){
         if(D[TOP[u]] < D[TOP[v]]) swap(u, v);
         seg.upd(IN[TOP[u]], IN[u], w);
@@ -80,7 +79,7 @@ int main()
 {
     ios::sync_with_stdio(0); cin.tie(0);
     cin >> N >> M;
-    for(int i=0,s,e,w;i<M;i++) {
+    for(ll i=0,s,e,w;i<M;i++) {
         cin >> s >> e >> w;
         E.push_back({w,s,e,i+1});
     }
@@ -103,7 +102,7 @@ int main()
     for(auto [w,u,v,i]:ex) upd(u,v,w), R[i]=mst;
 
     for(auto [w,u,v,i]:in) {
-        int a = qry(u,v);
+        ll a = qry(u,v);
         R[i] = a==INF ? -1 : mst-w+a;
     }
 
