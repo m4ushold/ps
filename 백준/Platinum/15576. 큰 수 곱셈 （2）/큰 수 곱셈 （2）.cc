@@ -4,37 +4,44 @@ using ll=long long;
 using cpx=complex<double>;
 using poly=vector<cpx>;
 
-void dft(poly &f, cpx w) {
+void fft(poly &f, bool inv) {
     int n=f.size();
-    if(n==1) return;
+    poly buc(n);
+    for(int s=n;s>=2;s/=2) {
+        for(int i=0;i<n;i+=s) {
+            int pos=0;
+            for(int j=0;j<s;j+=2) buc[pos++]=f[i+j];
+            for(int j=1;j<s;j+=2) buc[pos++]=f[i+j];
+            for(int j=0;j<s;j++) f[i+j]=buc[j];
+        }
+    }
 
-    poly a,b,c(n);
-    for(int i=0;i<n;i++) i&1 ? a.push_back(f[i]) : b.push_back(f[i]);
-    dft(a, w*w), dft(b,w*w);
+    for(int s=2;s<=n;s*=2) {
+        cpx w(cos(2*M_PI/s), sin(2*M_PI/s));
+        for(int i=0;i<n;i+=s) {
+            cpx wp(1,0);
+            for(int j=0;j<s/2;j++, wp*=w) {
+                cpx a=f[i+j], b=f[i+j+s/2];
+                f[i+j]=a+wp*b;
+                f[i+j+s/2]=a-wp*b;
+            }
+        }
+    }
 
-    cpx wp(1,0);
-    for(int i=0;i<n/2;i++,wp*=w) {
-        f[i] = b[i] + wp*a[i];
-        f[i+n/2]=b[i]-wp*a[i];
+    if(inv) {
+        reverse(f.begin()+1,f.end());
+        for(int i=0;i<n;i++) f[i]/=n;
     }
 }
 
-void idft(poly &f, cpx w) {
-    int n=f.size();
-    dft(f,w), reverse(f.begin()+1,f.end());
-    transform(f.begin(),f.end(),f.begin(),[&n](auto a){ return a/cpx(n,0); });
-}
-
-poly operator*(poly& a, poly& b) {
+poly operator*(poly a, poly b) {
     int n=1<<(__lg(a.size()+b.size())+(__popcount(a.size()+b.size())!=1));
     a.resize(n), b.resize(n);
-    poly c(n);
 
-    cpx w(cos(2*M_PI/n), sin(2*M_PI/n));
-    dft(a,w), dft(b,w);
-    for(int i=0;i<n;i++) c[i]=a[i]*b[i];
-    idft(c,w);
-    return c;
+    fft(a,0), fft(b,0);
+    for(int i=0;i<n;i++) a[i]*=b[i];
+    fft(a,1);
+    return a;
 }
 
 int main()
@@ -46,6 +53,7 @@ int main()
     poly a(s1.size()), b(s2.size());
     for(int i=0;i<s1.size();i++) a[i]=s1[i]-'0';
     for(int i=0;i<s2.size();i++) b[i]=s2[i]-'0';
+    
     vector<ll> c;
     for(auto i:a*b) c.push_back(round(i.real()));
     c.resize(s1.size()+s2.size()-1);
