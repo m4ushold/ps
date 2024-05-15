@@ -7,7 +7,7 @@ using node2_t=tuple<ll,ll,ll,ll,ll>;
 ll N, Q, AA[303030], BB[303030], CC[303030];
 
 struct SegTree {
-    static const int sz=1<<17;
+    static const int sz=1<<19;
     const node_t id={-1,-1}, lid={0,0};
     node_t A[sz<<1], B[sz<<1], L[sz<<1];
     node2_t C[sz<<1]; // uu ud du dd
