@@ -79,6 +79,11 @@ template <typename T> struct SplayTree {
         t[x].inv=!t[x].inv;
     }
 
+    int mod(int x, int m) { return (x%m+m)%m; }
+    void shift(int l, int r, int x) {
+        x=mod(x,r-l+1), rev(l,r), rev(l,l+x-1), rev(l+x,r);
+    }
+
     void qry(int l, int r) {
         int x=gather(l,r);
         cout << t[x].mn << ' ' << t[x].mx << ' ' << t[x].sum << '\n';
@@ -97,7 +102,6 @@ template <typename T> struct SplayTree {
     }
 };
 
-int mod(int x, int m) { return (x%m+m)%m; }
 
 int main()
 {
@@ -110,7 +114,7 @@ int main()
     for(int i=0,a,l,r,x,j;i<q;i++) {
         cin >> a >> l;
         if(a==1) cin >> r, tree.qry(l,r), tree.rev(l,r);
-        else if(a==2) cin >> r >> x, x=mod(x,r-l+1), tree.qry(l,r), tree.rev(l,r), tree.rev(l,l+x-1), tree.rev(l+x,r);
+        else if(a==2) cin >> r >> x, tree.qry(l,r), tree.shift(l,r,x);
         else if(a==3) tree.kth(l), cout << tree.t[tree.root].val << '\n';
         else tree.splay(l), cout << tree.t[tree.t[tree.root].l].cnt << '\n';
     }
