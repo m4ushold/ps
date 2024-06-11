@@ -47,7 +47,7 @@ int main()
         if(n==1) {cout << "E\n"; continue;}
 
         auto it=m.upper_bound(n);
-        if(it==m.begin() || it==m.end()) {cout << "O\n"; continue;}
+        if(it==m.begin()) {cout << "O\n"; continue;}
         
         --it;
         cout << "OE"[(it->first<=n && n<=it->second)] << '\n';
