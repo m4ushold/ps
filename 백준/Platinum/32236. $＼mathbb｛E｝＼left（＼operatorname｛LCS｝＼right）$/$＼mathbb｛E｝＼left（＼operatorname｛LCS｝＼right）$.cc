@@ -18,7 +18,7 @@ int main() {
     ll n,m; cin >> n >> m;
     ll dap=0;
     for(int i=1;i<=n;i++) {
-        dap+=pw(pw(i,m),MOD-2);
+        dap=(dap+pw(pw(i,m),MOD-2))%MOD;
         cout << dap << ' ';
     }
     return 0;
