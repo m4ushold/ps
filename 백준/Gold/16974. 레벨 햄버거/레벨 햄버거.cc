@@ -2,23 +2,21 @@
 using namespace std;
 using ll=long long;
 
-ll len(ll n) { return (1LL << (n+2)) - 3; }
-ll p(ll n) { return (1LL << (n+1)) - 1; }
+ll P[55]={1}, L[55]={1};
 
-ll recur(ll n, ll x) {
-    if(n == 0 && x <= 0) return 0;
-    if(n == 0) return 1;
+ll f(ll n, ll x) {
+    if(n==0) return 1;
 
-    if(len(n)/2 > x) return recur(n-1, x-1);
-    else if(len(n)/2 == x) return p(n-1);
-    else if(len(n)/2 == x-1) return p(n-1) + 1;
-    else return recur(n-1, x-2-len(n-1)) + 1 + p(n-1);
+    if(x<=1) return 0;
+    else if(L[n]==x) return P[n];
+    else if((L[n-1]+2==x)) return P[n-1]+1;
+    else if(1+L[n-1]>=x) return f(n-1,x-1);
+    else return P[n-1]+1+f(n-1,x-2-L[n-1]);
 }
 
-int main(void) {
-    ios::sync_with_stdio(0); cin.tie(0);
-    ll n, x, l;
-    cin >> n >> x;
-    cout << recur(n, x) << '\n';
+int main() {
+    ll n,x; cin >> n >> x;
+    for(int i=1;i<55;i++) P[i]=P[i-1]*2+1, L[i]=L[i-1]*2+3;
+    cout << f(n, x);
     return 0;
-}
+} 
