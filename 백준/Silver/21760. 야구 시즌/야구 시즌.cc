@@ -2,15 +2,12 @@
 using namespace std;
 using ll=long long;
 
-int T;
-ll N,M,k,D;
-
 void sol() {
     ll n,m,k,d; cin >> n >> m >> k >> d;
-    int b=0;
-    while(n*m*(b+1)*(k*(m-1)+m*(n-1))<=2*d) b++;
-    if(b<=1) cout << "-1\n";
-    else cout << n*m*b*(k*(m-1)+m*(n-1))/2 << '\n';
+    ll b=2*d/(k*n*m*(m-1) + m*m*n*(n-1));
+    if(b) cout << m*(m-1)*n*k*b/2 + m*m*n*(n-1)*b/2;
+    else cout << -1;
+    cout << "\n";
 }
 
 int main() {
