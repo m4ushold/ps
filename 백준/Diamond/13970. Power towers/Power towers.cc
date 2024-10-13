@@ -65,7 +65,8 @@ void sol(ll mod) {
         if(x==1) f=0;
         if(f) v.push_back(x);
     }
-    cout << PowerTower(v, mod) << '\n';
+    if(v.size()) cout << PowerTower(v, mod) << '\n';
+    else cout << "1\n";
 }
 
 int main() {
