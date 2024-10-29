@@ -1,42 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
+using ll=long long;
 
-constexpr int SZ=1<<20;
-ll N, M, K, A[SZ], T[SZ<<1];
-
-void init()
-{
-    for(int i=1;i<=N;i++) T[i|SZ]=A[i];
-    for(int i=SZ-1;i>=1;i--) T[i]=T[i*2]+T[i*2+1];
-}
-
-void update(int x, ll v)
-{
-    x|=SZ, T[x]=v;
-    while(x>>=1) T[x]=T[x*2]+T[x*2+1];
-}
-
-ll query(int l, int r)
-{
-    ll ret=0;
-    for(l|=SZ,r|=SZ;l<=r;l>>=1,r>>=1) {
-        if(l&1) ret+=T[l++];
-        if(~r&1) ret+=T[r--];
+struct Fenwick {
+    const static int sz=1<<20;
+    ll T[sz];
+    ll sum(int i) {
+        ll res=0;
+        while(i) res+=T[i], i-=i&(-i);
+        return res;
     }
-    return ret;
-}
+    ll sum(int l, int r) {
+        return sum(r)-(l?sum(l-1):0);
+    }
+    void add(int i, ll x) {
+        while(i<sz) T[i]+=x, i+=i&(-i);
+    }
+    void add(int l, int r, ll x) {
+        add(l, x), add(r+1, x);
+    }
+} fw;
 
-int main()
-{
-    ios::sync_with_stdio(0); cin.tie(0);
-    cin >> N >> M >> K;
-    for(int i=1;i<=N;i++) cin >> A[i];
-    init();
-    for(ll i=0,a,b,c;i<M+K;i++) {
+int main() {
+    cin.tie(0)->sync_with_stdio(0);
+    int n,m,k; cin >> n >> m >> k;
+    for(ll i=1,a;i<=n;i++) cin >> a, fw.add(i, a);
+    for(ll i=0,a,b,c;i<m+k;i++) {
         cin >> a >> b >> c;
-        if(a&1) update(b,c);
-        else cout << query(b,c) << '\n';
+        if(a==1) fw.add(b, c-fw.sum(b,b));
+        else cout << fw.sum(b,c) << '\n';
     }
     return 0;
 }
