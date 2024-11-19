@@ -1,0 +1,6 @@
+n = int(input())
+a = list(map(int,input().split()))
+s = sum(a)
+if a.count(0)>=n/2: print("INVALID")
+elif s>0: print("APPROVED")
+else: print("REJECTED")
