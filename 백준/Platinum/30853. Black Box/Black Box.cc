@@ -16,14 +16,6 @@ struct {
         }
         return i^sz;
     }
-    int qry(int l, int r) {
-        int res=0;
-        for(l|=sz,r|=sz;l<=r;l/=2,r/=2) {
-            if(l&1) res+=T[l++];
-            if(~r&1) res+=T[r--];
-        }
-        return res;
-    }
 } seg;
 
 int A[202020];
@@ -35,24 +27,22 @@ int main() {
     for(int &i:v) cin >> i;
     swap(v[v.back()%(n-1)], v[0]);
 
-    for(int i=1;i<n;i++) seg.upd(i, 1);
-    
-    A[0] = v[0];
-    int idx=0;
-    for(int i=1;i<n;i++) {
-        int sz=n-i;
-        int k = (v[i-1]-1+sz)%sz+1;
-        if(seg.qry(idx, n) < k) {
-            k-=seg.qry(idx,n);
-            idx = seg.kth(k);
-            A[idx] = v[i];
-        } else {
-            idx = seg.kth(seg.qry(0,idx)+k);
-            A[idx] = v[i];
-        }
-        seg.upd(idx, 0);
-    }
+    vector<int> res;
+    res.push_back(v[0]);
 
+    for(int i=1;i<n;i++) seg.upd(i, 1);
+
+    int t=v[0];
+    A[0] = v[0];
+    for(int i=1,p=1;i<n;i++) {
+        if(seg.T[1]) {
+            p=(p+t-1)%seg.T[1];
+            p=!p?seg.T[1]:p;
+        }
+        int j=seg.kth(p);
+        t = A[j] = v[i];
+        seg.upd(j,0);
+    }
     for(int i=0;i<n;i++) cout << A[i] << '\n';
     return 0;
 }
