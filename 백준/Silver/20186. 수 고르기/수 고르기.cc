@@ -9,7 +9,7 @@ int main() {
     sort(v.begin(),v.end(),greater<>());
     int ans=0, cnt=0;
     for(int i:v) {
-        ans += max(i-cnt, 0);
+        ans += i-cnt;
         cnt++;
         k--;
         if(k == 0) break;
