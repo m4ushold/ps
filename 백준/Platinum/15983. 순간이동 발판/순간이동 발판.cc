@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
+using ll=long long;
 
 ll mod(ll a, ll b) { return ((a%b) + b) % b; }
 ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a; }
@@ -32,11 +32,11 @@ pair<ll,ll> crt(const vector<ll> &a, const vector<ll> &m){
     return {ra, rm};
 }
 
-int N, T, D[111];
+ll N, T, D[111];
 vector<array<ll,3>> G[111], A[1010101];
 
 void dijkstra(int s) {
-    for(int i=1;i<111;i++) D[i]=1e9;
+    for(int i=1;i<111;i++) D[i]=LLONG_MAX/8;
     priority_queue<pair<ll,ll>,vector<pair<ll,ll>>, greater<>> pq;
     D[s]=0; pq.emplace(0,s);
     while(!pq.empty()) {
@@ -85,7 +85,7 @@ void sol(int tc) {
     dijkstra(ss);
     int ans = D[101];
 
-    if(ans >= 1e9) cout << -1;
+    if(ans >= LLONG_MAX/8) cout << -1;
     else cout << ans;
 }
 
