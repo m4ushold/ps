@@ -1,0 +1,17 @@
+segment .data
+    msg db "Hello World!", 10, 0
+
+segment .text
+    global main
+    extern printf
+
+main:
+    push    rbp
+    mov     rbp, rsp
+
+    lea     rdi, [msg]
+    call    printf
+
+    pop     rbp
+    xor     rax, rax
+    ret
