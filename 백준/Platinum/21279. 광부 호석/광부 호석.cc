@@ -134,15 +134,17 @@ void sol(int tc) {
 
     segtree<ll,op,e> seg(1<<17), cnt(1<<17);
     ll mx = 0;
+
+    auto f = [&](ll x) { return x<=m;};
+
     for(int i=0;i<n;i++) {
         auto [x,y,a] = v[i];
         seg.set(y, a + seg.get(y));
         cnt.set(y, 1 + cnt.get(y));
-        if(!i || v[i-1][0] == v[i][0]) continue;
+        if(!(i == n-1 || v[i][0] != v[i+1][0])) continue;
 
-        int j = cnt.find_kth(m);
-        if(cnt.prod(0,j+1) <= m) ++j;
-        mx = max(mx, seg.prod(0,j));
+        if (cnt.all_prod() <= m) mx = max(mx, seg.all_prod());
+        else mx = max(mx, seg.prod(0, cnt.find_kth(m + 1)));
     }
     cout << mx;
 }
